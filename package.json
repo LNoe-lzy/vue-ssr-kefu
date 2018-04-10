@@ -1,5 +1,5 @@
 {
-  "name": "vue-ssr-demo",
+  "name": "vue-ssr-kefu",
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "leezy <1076306553@qq.com>",
@@ -8,25 +8,14 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
-    "build:client": "node build/build.js",
-    "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.conf.js --progress --hide-modules",
-    "build": "rimraf dist && npm run build:client && npm run build:server",
-    "start-prod": "node server.js",
-    "ssr": "npm run build && node server.js"
+    "build": "node build/build.js"
   },
   "dependencies": {
-    "axios": "^0.18.0",
-    "cors": "^2.8.4",
-    "cross-env": "^5.1.4",
-    "express": "^4.16.2",
+    "element-ui": "^2.3.3",
     "less": "^3.0.1",
     "less-loader": "^4.1.0",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1",
-    "vue-server-renderer": "^2.5.15",
-    "vuex": "^3.0.1",
-    "vuex-router-sync": "^5.0.0",
-    "webpack-node-externals": "^1.6.0"
+    "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -43,13 +32,11 @@
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.0",
     "eslint": "^4.15.0",
-    "eslint-config-standard": "^10.2.1",
+    "eslint-config-airbnb-base": "^11.3.0",
     "eslint-friendly-formatter": "^3.0.0",
+    "eslint-import-resolver-webpack": "^0.8.3",
     "eslint-loader": "^1.7.1",
     "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-node": "^5.2.0",
-    "eslint-plugin-promise": "^3.4.0",
-    "eslint-plugin-standard": "^3.0.1",
     "eslint-plugin-vue": "^4.0.0",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.1.4",

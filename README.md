@@ -1,4 +1,4 @@
-# vue-ssr-demo
+# vue-ssr-kefu
 
 > A Vue.js project
 

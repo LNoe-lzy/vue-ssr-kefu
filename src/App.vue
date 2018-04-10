@@ -1,32 +1,31 @@
 <template>
   <div id="app">
     <v-header />
-    <router-view />
+    <div class="kefu-main">
+      <v-sidebar />
+      <router-view/>
+    </div>
   </div>
 </template>
 
 <script>
-import Header from './components/header'
+import Header from './components/header';
+import Sidebar from './components/sidebar';
 
 export default {
   name: 'App',
   components: {
-    'v-header': Header
-  }
-}
+    'v-header': Header,
+    'v-sidebar': Sidebar,
+  },
+};
 </script>
 
 <style lang="less">
-html {
-  font-size: 12px;
-}
-body {
-  background: #f4f5f5;
-}
-* {
-  list-style: none;
-}
 #app {
-  min-height: calc(100vh);
+  .kefu-main {
+    margin-top: 60px;
+    display: flex;
+  }
 }
 </style>

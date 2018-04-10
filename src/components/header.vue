@@ -1,68 +1,64 @@
+
 <template>
-  <header class="header">
-    <ul class="header-list">
-      <!-- <li class="header-list-item-active">SSR</li>
-      <li class="header-list-item">Vue</li>
-      <li class="header-list-item">React</li>
-      <li class="header-list-item">Node.js</li>
-      <li class="header-list-item">Webpack</li>
-      <li class="header-list-item">Express</li>
-      <li class="header-list-item">Less</li> -->
-      <li
-        class="header-list-item"
-        v-for="item in nav"
-        :key="item"
-      >{{item}}</li>
-    </ul>
+  <header class="kefu-header">
+    <div class="header-logo">vue ssr kefu</div>
+    <div class="header-wrapper">
+      <div class="header-handler"></div>
+      <el-menu
+        class="el-menu-demo"
+        mode="horizontal"
+        @select="handleSelect"
+      >
+        <el-menu-item index="1">处理中心</el-menu-item>
+        <el-submenu index="2">
+          <template slot="title">lizongyuan</template>
+          <el-menu-item index="2-1">注销</el-menu-item>
+        </el-submenu>
+      </el-menu>
+    </div>
   </header>
 </template>
 <script>
-import { mapState } from 'vuex'
 export default {
-  computed: {
-    ...mapState({
-      nav: state => state.nav
-    })
-  }
-}
+  data() {
+    return {};
+  },
+  methods: {
+    handleSelect() {
+
+    },
+  },
+};
 </script>
 <style lang="less">
-.header {
+.kefu-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 8px #f0f1f2;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  transition: all 0.2s;
+  z-index: 1000;
   background: #fff;
-  height: 3.833rem;
-  line-height: 3.833rem;
-  margin: auto;
-  .header-list {
+  box-sizing: border-box;
+  .header-logo {
+    color: #409EFF;
+    font-size: 20px;
+    font-weight: 500;
+    height: 60px;
+    line-height: 60px;
+    padding: 0 15px;
+  }
+  .header-wrapper {
     display: flex;
-    max-width: 960px;
-    margin: auto;
-    .header-list-item {
-      padding: 0 1.5rem;
-      font-size: 1.16rem;
-      transition: all .3s;
-      border-bottom: 2px solid transparent;
-      cursor: pointer;
-      color: #71777c;
-      &:hover {
-        color: #007fff;
-        border-color: #007fff;
-      }
+    flex: 1;
+    .header-handler {
+      flex: 1;
     }
-    .header-list-item-active {
-      padding: 0 1.5rem;
-      font-size: 1.16rem;
-      transition: all .3s;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      color: #007fff;
-      border-color: #007fff;
-    }
+  }
+  .el-menu--horizontal {
+    border-bottom: none;
   }
 }
 </style>

@@ -1,18 +1,26 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Main from '../components/main.vue'
+import Vue from 'vue';
+import Router from 'vue-router';
+import Task from '../components/task';
+import WorkOrder from '../components/workorder';
 
-Vue.use(Router)
+Vue.use(Router);
 
-export function createRouter () {
-  return new Router({
-    mode: 'history',
-    routes: [
-      {
-        path: '/',
-        name: 'main',
-        component: Main
-      }
-    ]
-  })
-}
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      name: 'task',
+      component: Task,
+    },
+    {
+      path: '/workorder/:workOrderId',
+      name: 'workorder',
+      component: WorkOrder,
+    },
+    {
+      path: '/newworkorder',
+      name: 'workorder',
+      component: WorkOrder,
+    },
+  ],
+});
