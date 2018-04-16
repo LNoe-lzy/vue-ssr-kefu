@@ -1,9 +1,6 @@
 /* eslint-disable */
 export default {
-  GET_TREE: function (state, data) {
-    state.tree = data
+  GET_WORKORDERLIST: function (state, data) {
+    state.workOrderList = data
   },
-  GET_NAV: function (state, data) {
-    state.nav = data
-  }
 }

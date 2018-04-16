@@ -2,7 +2,7 @@
 <template>
   <div class="kefu-task">
     <el-table
-      :data="tableData"
+      :data="workOrderList"
       style="width: 100%"
     >
       <el-table-column
@@ -53,53 +53,16 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex';
+
 export default {
-  data() {
-    return {
-      tableData: [{
-        workOrderId: '1',
-        date: '2016-05-02',
-        name: 'lizongyuan',
-        address: '上海市普陀区金沙江路 1518 弄',
-        level: '1',
-        status: '处理中',
-      }, {
-        workOrderId: '2',
-        date: '2016-05-04',
-        name: 'lizongyuan',
-        address: '上海市普陀区金沙江路 1517 弄',
-        level: '1',
-        status: '处理中',
-      }, {
-        workOrderId: '3',
-        date: '2016-05-01',
-        name: 'lizongyuan',
-        address: '上海市普陀区金沙江路 1519 弄',
-        level: '2',
-        status: '处理中',
-      }, {
-        workOrderId: '4',
-        date: '2016-05-03',
-        name: 'lizongyuan',
-        address: '上海市普陀区金沙江路 1516 弄',
-        level: '1',
-        status: '处理中',
-      }, {
-        workOrderId: '5',
-        date: '2016-05-01',
-        name: 'lizongyuan',
-        address: '上海市普陀区金沙江路 1519 弄',
-        level: '2',
-        status: '处理中',
-      }, {
-        workOrderId: '6',
-        date: '2016-05-03',
-        name: 'lizongyuan',
-        address: '上海市普陀区金沙江路 1516 弄',
-        level: '1',
-        status: '处理中',
-      }],
-    };
+  asyncData({ store }) {
+    return store.dispatch('getWorkOrderList');
+  },
+  computed: {
+    ...mapState({
+      workOrderList: state => state.workOrderList,
+    }),
   },
   methods: {
     handleEdit(index, row) {

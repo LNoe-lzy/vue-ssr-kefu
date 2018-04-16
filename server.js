@@ -5,6 +5,18 @@ const {
   createBundleRenderer
 } = require('vue-server-renderer')
 
+// 启动代理服务器
+const cors = require('cors')
+const routes = require('./routes/index')
+
+const server = express()
+server.use(cors())
+server.use('/', routes)
+server.on('error', err => console.log(err))
+server.listen(8088, () => {
+  console.log(`server started at localhost:8088`)
+})
+
 const isProd = process.env.NODE_ENV === 'production'
 const app = express()
 const resolve = file => path.resolve(__dirname, file)
