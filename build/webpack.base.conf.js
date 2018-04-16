@@ -3,6 +3,11 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const webpack = require('webpack')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+
+const isProd = process.env.NODE_ENV === 'production'
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -20,10 +25,10 @@ const createLintingRule = () => ({
 })
 
 module.exports = {
+  // devtool: isProd
+  //   ? false
+  //   : '#cheap-module-source-map',
   context: path.resolve(__dirname, '../'),
-  entry: {
-    app: './src/main.js'
-  },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -74,9 +79,29 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
-      }
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'vue-style-loader',
+          'css-loader'
+        ],
+      },
     ]
   },
+  plugins: isProd
+    ? [
+        new webpack.optimize.UglifyJsPlugin({
+          compress: { warnings: false }
+        }),
+        new webpack.optimize.ModuleConcatenationPlugin(),
+        new ExtractTextPlugin({
+          filename: 'common.[chunkhash].css'
+        })
+      ]
+    : [
+        new FriendlyErrorsPlugin()
+      ],
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue
     // source contains it (although only uses it if it's native).
