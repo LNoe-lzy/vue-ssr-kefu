@@ -9,7 +9,25 @@ const {
 const cors = require('cors')
 const routes = require('./routes/index')
 
+//  node server
 const server = express()
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
+const session = require('express-session')
+const mongoStore = require('connect-mongo')(session)
+
+mongoose.connect('mongodb://localhost/kefu')
+
+server.use(bodyParser.json())
+server.use(bodyParser.urlencoded({
+  extended: false
+}));
+server.use(session({
+  secret: 'kefu',
+  store: new mongoStore({
+    mongooseConnection: mongoose.connection
+  })
+}));
 server.use(cors())
 server.use('/', routes)
 server.on('error', err => console.log(err))
