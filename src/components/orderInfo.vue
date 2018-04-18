@@ -1,27 +1,25 @@
 
 <template>
-  <div class="kefu-orderinfo">
+  <div
+    class="kefu-orderinfo"
+    v-loading="loading"
+  >
     <div class="orderinfo-header">订单信息</div>
     <div class="orderinfo-main">
       <el-table
-        :data="tableData"
+        :data="orderList"
         style="width: 100%"
       >
         <el-table-column
           label="订单号"
-          prop="orderId"
+          prop="_id"
+          width="220"
         ></el-table-column>
         <el-table-column
           label="订单状态"
         >
           <template slot-scope="scope">
-            <el-popover trigger="hover" placement="top">
-              <p>姓名: {{ scope.row.name }}</p>
-              <p>住址: {{ scope.row.address }}</p>
-              <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{ scope.row.status }}</el-tag>
-              </div>
-            </el-popover>
+            <el-tag size="medium">{{ scope.row.status }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column
@@ -38,13 +36,15 @@
         >
           <template slot-scope="scope">
             <el-button
+              v-if="scope.row.relation !== workOrderId"
               size="mini"
               icon="el-icon-share"
-              @click="handleEdit(scope.$index, scope.row)">关联</el-button>
+              @click="handleEdit(scope.row)">关联</el-button>
             <el-button
+              v-if="scope.row.relation === workOrderId"
               size="mini"
               type="danger"
-              @click="handleDelete(scope.$index, scope.row)">取消关联</el-button>
+              @click="handleDelete(scope.row)">取消关联</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -52,58 +52,62 @@
   </div>
 </template>
 <script>
+import moment from 'moment';
+import { mapActions } from 'vuex';
+/* eslint-disable */
 export default {
   name: 'order-info',
   data() {
     return {
-      tableData: [{
-        orderId: '1',
-        date: '2016-05-02',
-        name: 'lizongyuan',
-        address: '上海市普陀区金沙江路 1518 弄',
-        level: '1',
-        status: '处理中',
-      }, {
-        orderId: '2',
-        date: '2016-05-04',
-        name: 'lizongyuan',
-        address: '上海市普陀区金沙江路 1517 弄',
-        level: '1',
-        status: '处理中',
-      }, {
-        orderId: '3',
-        date: '2016-05-01',
-        name: 'lizongyuan',
-        address: '上海市普陀区金沙江路 1519 弄',
-        level: '2',
-        status: '处理中',
-      }, {
-        orderId: '4',
-        date: '2016-05-03',
-        name: 'lizongyuan',
-        address: '上海市普陀区金沙江路 1516 弄',
-        level: '1',
-        status: '处理中',
-      }, {
-        orderId: '5',
-        date: '2016-05-01',
-        name: 'lizongyuan',
-        address: '上海市普陀区金沙江路 1519 弄',
-        level: '2',
-        status: '处理中',
-      }, {
-        orderId: '6',
-        date: '2016-05-03',
-        name: 'lizongyuan',
-        address: '上海市普陀区金沙江路 1516 弄',
-        level: '1',
-        status: '处理中',
-      }],
+      orderList: [],
+      loading: false,
+      workOrderId: this.$route.params.workOrderId
     };
   },
+  mounted() {
+    this.getList();
+  },
   methods: {
-    onSubmit() {
-      console.log('submit!');
+    ...mapActions([
+      'getOrderList',
+      'relateOrder',
+      'unrelateOrder',
+    ]),
+    getList() {
+      this.loading = true;
+      this.getOrderList().then((res) => {
+        this.orderList = res.map((item) => {
+          const date = moment(new Date(item.date * 1000)).format('YYYY-MM-DD');
+          return Object.assign({}, item, {
+            date,
+          });
+        });
+        this.loading = false;
+      }, (errmsg) => {
+        this.$message.error(errmsg);
+        this.loading = false;
+      });
+    },
+    handleEdit(data) {
+      this.relateOrder({
+        orderId: data._id,
+        workOrderId: this.$route.params.workOrderId,
+      }).then(() => {
+        this.$message.success('操作成功!');
+        this.getList();
+      }, (errmsg) => {
+        this.$message.success(errmsg);
+      })
+    },
+    handleDelete(data) {
+      this.unrelateOrder({
+        orderId: data._id,
+      }).then(() => {
+        this.$message.success('操作成功!');
+        this.getList();
+      }, (errmsg) => {
+        this.$message.success(errmsg);
+      })
     },
   },
 };

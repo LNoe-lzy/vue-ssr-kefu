@@ -14,14 +14,15 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="当前处理人"
+        label="工单类型"
         width="180">
         <template slot-scope="scope">
           <el-popover trigger="hover" placement="top">
-            <p>姓名: {{ scope.row.name }}</p>
-            <p>住址: {{ scope.row.address }}</p>
+            <p>类型: {{ scope.row.type }}</p>
+            <p>主题: {{ scope.row.name }}</p>
+            <p>描述: {{ scope.row.desc }}</p>
             <div slot="reference" class="name-wrapper">
-              <el-tag size="medium">{{ scope.row.name }}</el-tag>
+              <el-tag size="medium">{{ scope.row.type }}</el-tag>
             </div>
           </el-popover>
         </template>
@@ -53,7 +54,10 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex';
+/* eslint-disable */
+import moment from 'moment';
+import { mapState, mapActions } from 'vuex';
+import { workOrderStatus } from '../config/config';
 
 export default {
   asyncData({ store }) {
@@ -61,20 +65,46 @@ export default {
   },
   computed: {
     ...mapState({
-      workOrderList: state => state.workOrderList,
+      workOrderList: state => state.workOrderList.map((item) => {
+        const status = workOrderStatus[item.status];
+        const date = moment(new Date(item.date * 1000)).format('YYYY-MM-DD');
+        return Object.assign({}, item, {
+          status,
+          date,
+        });
+      }),
     }),
   },
   methods: {
+    ...mapActions([
+      'deleteWorkOrder'
+    ]),
     handleEdit(index, row) {
       this.$router.push({
         name: 'workorder',
         params: {
-          workOrderId: row.workOrderId,
+          workOrderId: row._id,
         },
       });
     },
     handleDelete(index, row) {
-      console.log(index, row);
+      const that = this;
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        that.deleteWorkOrder({
+          workOrderId: row._id,
+        }).then(() => {
+          that.$message.success('操作成功!');
+          that.$store.dispatch('getWorkOrderList');
+        }, (errmsg) => {
+          that.$message.error(errmsg);
+        })
+      }).catch(() => {
+        return;       
+      });
     },
   },
 };

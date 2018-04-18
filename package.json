@@ -23,6 +23,7 @@
     "express-session": "^1.15.6",
     "less": "^3.0.1",
     "less-loader": "^4.1.0",
+    "moment": "^2.22.1",
     "mongoose": "^5.0.15",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
