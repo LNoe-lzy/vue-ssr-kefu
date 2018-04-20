@@ -18,6 +18,9 @@ export default {
     'v-header': Header,
     'v-sidebar': Sidebar,
   },
+  mounted() {
+    console.log(this.$store);
+  },
 };
 </script>
 
